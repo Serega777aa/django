@@ -5,11 +5,13 @@ from django.views.generic import ListView, TemplateView
 
 from hw3_app.models import Order
 
+
 MAIN_MENU = [
             {'href': 'index', 'name': 'Главная'},
             {'href': 'about', 'name': 'О компании'},
             {'href': 'orders', 'name': 'Заказы'},
             {'href': 'contact', 'name': 'Контакты'},
+
         ]
 
 class Home(TemplateView):
@@ -46,4 +48,5 @@ class Orders(ListView):
         context['main_menu'] = MAIN_MENU
         context['orders'] = Order.objects.all()
         return context
-    
+
+
