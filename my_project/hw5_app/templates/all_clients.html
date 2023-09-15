@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container my-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-center">
+            {% if clients %}
+            <h1>Все клиенты</h1>
+            <ul class="list-group">
+                {% for client in clients %}
+                <li class="list-group-item card mb-2">
+                    <div class="card-body">
+                        <h4 class="card-title">{{ client.name }}</h4>
+                        <p class="card-text">Email: {{ client.email }}</p>
+                        <p class="card-text">Телефон: {{ client.phone_number }}</p>
+                        <p class="card-text">Адрес: {{ client.address }}</p>
+                        <a href="{{ client.get_absolute_url }}" class="btn btn-outline-secondary">
+                            Подробнее заказ >>
+                        </a>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <h3>Пока клиентов нет...</h3>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        transition: transform 1s ease-in-out;
+    }
+
+    .card:hover {
+        transform: scale(1.02);
+    }
+</style>
+
+{% endblock %}

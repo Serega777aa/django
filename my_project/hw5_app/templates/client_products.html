@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Товары клиента {{ client.name }}</h1>
+        <a href="{% url 'shop_app:client_orders' client.pk %}" class="btn btn-secondary mb-3">
+       << Назад к списку заказов
+        </a>
+        <a href="{% url 'shop_app:create_product' client_id %}" class="btn btn-secondary mb-3">
+        Добавить новый товар >>
+        </a>
+    <h3>Выберите период:</h3>
+    <ul class="nav nav-pills mb-4">
+        <li class="nav-item">
+            <a class="nav-link btn btn-outline-secondary btn-sm {% if period == '7' %}active{% endif %}" href="?period=7">Неделя</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link btn btn-outline-secondary btn-sm {% if period == '30' %}active{% endif %}" href="?period=30">Месяц</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link btn btn-info btn-secondary btn-sm {% if period == '365' %}active{% endif %}" href="?period=365">Год</a>
+        </li>
+    </ul>
+    <ul class="list-group">
+        {% for product in products %}
+        <li class="list-group-item card">
+            {{ product.name }}
+            <a href="{% url 'shop_app:update_product' product.pk client_id %}" class="btn btn-outline-secondary btn-sm">
+            Редактировать товар
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

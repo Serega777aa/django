@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    {% if orders.0.client.name %}
+    <h1>Заказы клиента {{ orders.0.client.name }}</h1>
+    <a href="{% url 'shop_app:all_clients' %}" class="btn btn-secondary mb-3">
+       << Назад к списку клиентов
+    </a>
+    <a href="{% url 'shop_app:client_products' orders.0.client.pk %}" class="btn btn-secondary mb-3">
+        Вперёд к списку товаров клиента >>
+    </a>
+    <ul class="list-group">
+        {% for order in orders %}
+        <li class="list-group-item card" style="margin: 1px">
+            <h3>Заказ #{{ order.id }}</h3>
+            <p>Дата заказа: {{ order.order_date }}</p>
+            <button class="btn btn-outline-secondary view-order-btn btn-sm" data-order-id="{{ order.id }}">
+                Посмотреть заказ
+            </button>
+            <div id="order-details-{{ order.id }}" class="collapse mt-3">
+                <ul class="list-group list-group-numbered">
+                    {% for item in order.orderitem_set.all %}
+                    <li class="list-group-item col d-flex justify-content-between align-items-start">
+                        <div class="ms-2 me-auto">
+                            <div class="fw-bold">{{ item.product.name }}</div>
+                            {{ item.product.category }}
+                        </div>
+                        <span class="badge bg-primary rounded-pill">{{ item.quantity }} шт</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <h1> У клиента {{client.name}} нет заказов </h1>
+    <a href="{% url 'shop_app:all_clients' %}" class="btn btn-secondary mb-3">
+        << Назад к списку клиентов
+    </a>
+    {% endif %}
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const viewOrderButtons = document.querySelectorAll(".view-order-btn");
+
+        viewOrderButtons.forEach((button) => {
+            button.addEventListener("click", function () {
+                const orderId = button.dataset.orderId;
+                const orderDetails = document.getElementById(`order-details-${orderId}`);
+
+                if (orderDetails.style.display === "none" || !orderDetails.style.display) {
+                    orderDetails.style.display = "block";
+                    button.innerText = "Скрыть заказ";
+                } else {
+                    orderDetails.style.display = "none";
+                    button.innerText = "Посмотреть заказ";
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}
